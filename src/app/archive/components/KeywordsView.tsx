@@ -47,7 +47,7 @@ export default function KeywordView({ currentDate }: { currentDate: Date }) {
   return (
     <div>
       {data.monthlySavedTimeAndActivityCount.monthlyTotalActivityCount === 0 ? (
-        <div className="w-342 h-342 rounded-12 bg-primary_foundation-5 flex items-center justify-center p-24 mx-auto mt-20">
+        <div className="w-342 h-342 rounded-12 bg-primary_foundation-5 flex items-center justify-center p-24 mx-auto mt-20 mb-350">
           <div className="mt-35 mb-20 flex flex-col items-center gap-8">
             <h2 className="text-18">아직 모은 시간 조각이 없어요!</h2>
             {currentYear === data.joinedYear &&

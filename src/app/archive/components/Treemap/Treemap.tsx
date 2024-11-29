@@ -120,7 +120,7 @@ export default function TreemapChart({
   }
 
   return (
-    <div className="w-345 h-345 mx-auto flex flex-wrap gap-4 rounded-12 my-20">
+    <div className="w-345 h-345 mx-auto flex flex-wrap gap-4 rounded-12 mt-20 mb-350">
       {layouts.map(({ width, height, item }) => (
         <button
           key={item.keyword.category}
