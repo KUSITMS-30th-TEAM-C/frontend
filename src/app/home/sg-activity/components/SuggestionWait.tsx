@@ -30,7 +30,7 @@ export default function SuggestionWait({
 
   const translatedKeywords = keywords.map(translateKeyword)
   return (
-    <div className="w-full">
+    <div className="w-full bg-[#F7F7FC]">
       <div className="w-251 mx-auto mt-35 text-center">
         <p className="font-semibold text-24">
           {nickname} 님에게 딱 맞는

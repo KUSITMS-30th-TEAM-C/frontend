@@ -13,8 +13,6 @@ export default function ChoiceTime({ setError }: SetErrorProps) {
 
   const { spareTime, setSpareTime } = useActivityStore()
 
-  console.log('자투리 시간', spareTime)
-
   const [isInitialized, setIsInitialized] = useState(false)
 
   const validateTime = (inputTime: string) => {

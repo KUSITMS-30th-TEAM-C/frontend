@@ -66,7 +66,7 @@ export default function ChoiceSuggestion({
     }
 
     const fetchData = async () => {
-      console.log('보내는 데이터 확인', postData)
+      // console.log('보내는 데이터 확인', postData)
       try {
         setIsSuggestLoading(true)
 
@@ -89,12 +89,12 @@ export default function ChoiceSuggestion({
         }
 
         const toJson: ActivityResponse = await response.json()
-        console.log('받은 데이터', toJson)
+        // console.log('받은 데이터', toJson)
         const mergeArr = [
           ...toJson.data.offlineRecommendations,
           ...toJson.data.onlineRecommendations,
         ]
-        console.log('데이터', mergeArr)
+        // console.log('데이터', mergeArr)
         setResponseData(mergeArr)
       } catch (error) {
         console.error('Error sending POST request:', error)

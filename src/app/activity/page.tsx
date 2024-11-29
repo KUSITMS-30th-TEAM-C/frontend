@@ -57,16 +57,27 @@ export default function ActivityPage() {
     }
   }
 
+  const calculateSavedTime = (spareTime: number, elapsedMinutes: number) => {
+    let savedTime: number = 0
+    if (spareTime < elapsedMinutes) {
+      savedTime = spareTime
+    } else {
+      savedTime = elapsedMinutes
+    }
+    return savedTime
+  }
+
   const updateRemainingTime = (startTimeValue: number, spareTimeMs: number) => {
     const currentTime = Date.now()
     const elapsedRm = currentTime - startTimeValue
     const remainingTimeMsRm = spareTimeMs - elapsedRm
 
     const elapsedMinutesInUpdateFn = Math.floor(elapsedRm / 60000)
-    const cappedElapsedTime =
-      spareTimeLocal && elapsedMinutesInUpdateFn > spareTimeLocal
-        ? spareTimeLocal
-        : elapsedMinutesInUpdateFn
+
+    const cappedElapsedTime = calculateSavedTime(
+      spareTimeMs,
+      elapsedMinutesInUpdateFn,
+    )
     setElapsedTime(cappedElapsedTime)
 
     if (remainingTimeMsRm <= 0) {
@@ -96,13 +107,14 @@ export default function ActivityPage() {
     const token = Cookies.get('accessToken')
     const selectedActivityLocal: SeletedActivityDone =
       JSON.parse(getActivityData)
-    const spareTimeMs = selectedActivityLocal.spareTime * 60 * 1000
+    const spareTimeInUseEffect = selectedActivityLocal.spareTime
+    const spareTimeMs = spareTimeInUseEffect * 60 * 1000
     let startTime = localStorage.getItem('startTime')
     const now = Date.now()
     const remainActivityId = localStorage.getItem('activityId')
 
     setAccessToken(token)
-    setSpareTimeLocal(selectedActivityLocal.spareTime)
+    setSpareTimeLocal(spareTimeInUseEffect)
 
     const postSelectData = async () => {
       try {
@@ -147,12 +159,13 @@ export default function ActivityPage() {
     const remainingTimeMs = spareTimeMs - elapsed
 
     const elapsedMinutesInuseEffect = Math.ceil(elapsed / 60000)
-    const savedTime =
-      spareTimeLocal && elapsedMinutesInuseEffect > spareTimeLocal
-        ? spareTimeLocal
-        : elapsedMinutesInuseEffect
 
-    setElapsedTime(savedTime)
+    const calSavedTime = calculateSavedTime(
+      spareTimeInUseEffect,
+      elapsedMinutesInuseEffect,
+    )
+
+    setElapsedTime(calSavedTime)
 
     if (elapsed >= spareTimeMs) {
       // 시간이 이미 지난 경우
@@ -199,10 +212,12 @@ export default function ActivityPage() {
         const calculateElapsed = now - parseInt(startTime, 10)
         const elapsedMinutes = Math.round(calculateElapsed / 60000)
 
-        if (spareTimeLocal && elapsedMinutes > spareTimeLocal) {
-          setElapsedTime(spareTimeLocal)
-        } else {
-          setElapsedTime(elapsedMinutes)
+        if (spareTimeLocal) {
+          const calSavedTimeClickDone = calculateSavedTime(
+            spareTimeLocal,
+            elapsedMinutes,
+          )
+          setElapsedTime(calSavedTimeClickDone)
         }
       } else {
         setElapsedTime(0)
@@ -240,7 +255,7 @@ export default function ActivityPage() {
   return (
     <>
       {isTimeUp ? (
-        <div className="relative w-full h-screen">
+        <div className="w-full h-full">
           <header className="relative font-semibold flex justify-center items-center py-4 min-h-52 mt-10">
             <span>활동 종료</span>
           </header>
@@ -265,10 +280,10 @@ export default function ActivityPage() {
             <div className="absolute bottom-125 w-full z-10">
               <div className="w-351 h-104 bg-white flex justify-between mx-auto px-20 rounded-12">
                 <div className="w-200 h-70 my-auto items-center">
-                  <p className="text-12 text-primary_foundation-50">
+                  <p className="text-12 text-primary_foundation-50 line-clamp-1">
                     {selectedActivityData?.content}
                   </p>
-                  <p className="font-medium text-16 text-primary_foundation-100 mt-5">
+                  <p className="font-medium text-16 text-primary_foundation-100 mt-5 line-clamp-2">
                     {selectedActivityData?.title}
                   </p>
                 </div>

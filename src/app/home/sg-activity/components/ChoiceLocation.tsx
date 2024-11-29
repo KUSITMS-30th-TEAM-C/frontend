@@ -232,7 +232,7 @@ export default function ChoiceLocation({ setError }: SetErrorProps) {
           <div
             role="button" // 버튼 역할을 명시
             tabIndex={0}
-            className="fixed inset-0 bg-black bg-opacity-60 z-20"
+            className=" absolute inset-0 bg-black bg-opacity-60 z-20"
             onClick={() => setIsSearch(false)}
             onKeyDown={(e) => {
               if (e.key === 'Enter') {
@@ -243,7 +243,7 @@ export default function ChoiceLocation({ setError }: SetErrorProps) {
 
           <section
             className={cn(
-              'fixed bottom-0 bg-white w-full h-3/5 z-30 transition-transform duration-300 rounded-t-16',
+              'absolute bottom-0 bg-white w-full h-3/5 z-30 transition-transform duration-300 rounded-t-16',
               isSearch ? 'translate-y-0' : 'translate-y-full',
             )}
           >
@@ -274,7 +274,7 @@ export default function ChoiceLocation({ setError }: SetErrorProps) {
                 )}
               </div>
 
-              <div className="overflow-scroll max-h-400">
+              <div className="overflow-auto max-h-390">
                 {searchlist &&
                   searchlist.map((addressResultOne) => {
                     return (

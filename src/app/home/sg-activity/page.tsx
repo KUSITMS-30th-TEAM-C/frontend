@@ -6,6 +6,7 @@ import { useState, useEffect } from 'react'
 import { cn } from '@/util'
 import { ActivityData, SeletedActivityDone } from '@/types/activityTypes'
 import { useActivityStore } from '@/store/activityStore'
+import { useIsSuggestLoading } from '@/store/SuggestLodingCheckStore'
 import { useRouter } from 'next/navigation'
 import ArrowIcon from '@/components/Icons/ArrowIcon'
 import ChoiceTime from './components/ChoiceTime'
@@ -19,7 +20,7 @@ export default function SuggestActivity() {
   const [error, setError] = useState(true)
   const [text, setText] = useState('다음')
   const [selectOnOff, setSeletOnOff] = useState<string[]>([])
-  const [isSuggestLoading, setIsSuggestLoading] = useState(false)
+  const { isSuggestLoading, setIsSuggestLoading } = useIsSuggestLoading()
 
   const [selectedActivity, setSeletedActivity] = useState<ActivityData>()
   const [activityLink, setActivityLink] = useState('')
@@ -30,6 +31,7 @@ export default function SuggestActivity() {
   const handleBack = () => {
     if (step === 1) {
       setSpareTime('')
+      reset()
       router.push('/home')
       return
     }
