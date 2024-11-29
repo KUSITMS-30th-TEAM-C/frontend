@@ -6,6 +6,7 @@ interface UseProfileSelectorReturn {
   selectedProfileID: string
   handleProfileSelect: (profile: string) => void
   profileUrl: string
+  isProfileChanged: boolean
 }
 
 export const useProfileSelector = (): UseProfileSelectorReturn => {
@@ -27,8 +28,15 @@ export const useProfileSelector = (): UseProfileSelectorReturn => {
     extractProfileID(userInfo.profileImage),
   )
 
+  const [isProfileChanged, setIsProfileChanged] = useState(false)
+
   const handleProfileSelect = useCallback(
     (profile: string) => {
+      if (profile !== extractProfileID(userInfo.profileImage)) {
+        setIsProfileChanged(true)
+      } else {
+        setIsProfileChanged(false)
+      }
       setSelectedProfileID(profile)
       setUserInfo({
         ...userInfo,
@@ -43,5 +51,6 @@ export const useProfileSelector = (): UseProfileSelectorReturn => {
     selectedProfileID,
     profileUrl: `${PROFILE_BASE_URL}/profile${selectedProfileID}.svg`,
     handleProfileSelect,
+    isProfileChanged,
   }
 }
