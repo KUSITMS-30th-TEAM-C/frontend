@@ -4,7 +4,6 @@ import { useEffect } from 'react'
 import { useRouter } from 'next/navigation'
 import { Button, HomeHeader, Div, Right, FooterButtons } from '@/components'
 import useUserInfo from '@/store/useUserInfo'
-import { useActivityStore } from '@/store/activityStore'
 import { useHomeContext } from './fast/components/Fetcher'
 import { QuickBox } from './components/QuickBox'
 import NoQuickBox from './components/NoQuickBox'
@@ -15,12 +14,14 @@ export default function Home() {
   const { quickStart, totalSavedTime, activities } = useHomeContext()
   const { userInfo } = useUserInfo()
   const { push } = useRouter()
-  const { reset } = useActivityStore()
 
   useEffect(() => {
     localStorage.removeItem('quickStart')
-    reset()
-  }, [reset])
+    const activityIng = localStorage.getItem('selectedActivity')
+    if (activityIng) {
+      push('/activity')
+    }
+  }, [])
 
   return (
     <HomeHeader title="홈">

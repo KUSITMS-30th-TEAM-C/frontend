@@ -11,8 +11,6 @@ export default function ChoiceTime({ setError }: SetErrorProps) {
     '시간은 최소 10분부터 최대 300분까지 입력할 수 있어요.',
   )
 
-  const [isValid, setIsValid] = useState(false)
-
   const { spareTime, setSpareTime } = useActivityStore()
 
   console.log('자투리 시간', spareTime)
@@ -40,19 +38,25 @@ export default function ChoiceTime({ setError }: SetErrorProps) {
       return false
     }
 
-    setState('시간은 최소 10분부터 최대 300분까지 입력할 수 있어요.')
+    setState('')
     return true
   }
 
   const handleChangeTime = (inputTime: string) => {
     setSpareTime(inputTime)
+
     const validate = validateTime(inputTime)
-    setIsValid(validate)
+
     setError(!validate)
     updateQuickStartData('spareTime', inputTime)
   }
 
   useEffect(() => {
+    if (spareTime) {
+      setState('')
+      setError(false)
+    }
+
     if (!isInitialized) {
       const quickStartData = getQuickStartData()
       if (quickStartData) {
@@ -92,14 +96,15 @@ export default function ChoiceTime({ setError }: SetErrorProps) {
         </div>
         <p className="font-semibold text-28">의 시간이 남아요.</p>
       </div>
-      {(spareTime === '' || !isValid) && (
-        <p
-          className={`flex font-medium text-12 gap-5 mt-8 ${spareTime === '' ? 'text-primary_foundation-50' : 'text-system_red'}`}
-        >
-          {spareTime !== '' && !isValid && <Caution className="my-auto" />}
-          {state}
-        </p>
-      )}
+      <p
+        className={`flex font-medium text-12 gap-5 mt-8 
+          ${state !== '시간은 최소 10분부터 최대 300분까지 입력할 수 있어요.' ? 'text-system_red' : 'text-primary_foundation-50'}
+        `}
+      >
+        {state !== '시간은 최소 10분부터 최대 300분까지 입력할 수 있어요.' &&
+          state !== '' && <Caution className="my-auto" />}
+        {state}
+      </p>
     </div>
   )
 }

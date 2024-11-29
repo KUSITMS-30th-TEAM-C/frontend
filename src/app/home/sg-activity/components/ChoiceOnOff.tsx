@@ -59,8 +59,6 @@ export default function ChoiceOnOff({
         default:
           setActivityType([])
       }
-    } else {
-      setActivityType([])
     }
   }, [])
 

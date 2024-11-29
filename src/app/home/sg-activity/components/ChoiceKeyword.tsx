@@ -37,7 +37,16 @@ export default function ChoiceKeyword({ setError }: SetErrorProps) {
       return keywordList.filter((keyword) => keyword !== 'NATURE')
     }
     return keywordList
-  }, [activityType, keywordList])
+  }, [activityType])
+
+  useEffect(() => {
+    if (activityType.includes('오프라인') && !activityType.includes('온라인')) {
+      const removeSocialInKeywords = keywords.filter((k) => k !== 'SOCIAL')
+      if (removeSocialInKeywords.length !== keywords.length) {
+        setKeywords(removeSocialInKeywords)
+      }
+    }
+  }, [activityType])
 
   const toggleKeyword = (keyword: string) => {
     if (keywords.includes(keyword)) {
