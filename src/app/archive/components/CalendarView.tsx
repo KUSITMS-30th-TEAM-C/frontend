@@ -25,7 +25,7 @@ export default function CalendarView({ currentDate }: CalendarViewProps) {
           setSelectedDate={setSelectedDate}
         />
       </div>
-      <Activities selectedDate={selectedDate} />
+      <Activities selectedDate={selectedDate} currentDate={currentDate} />
       <FooterButtons />
     </>
   )

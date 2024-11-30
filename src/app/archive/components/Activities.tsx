@@ -1,13 +1,41 @@
-import { format, parseISO } from 'date-fns'
+'use client'
+
+import { format, parseISO, getYear, getMonth } from 'date-fns'
 import { ko } from 'date-fns/locale'
 import { Button, If, Right } from '@/components'
 import { useRouter } from 'next/navigation'
 import { useCalendarContext } from '../api/fetcher'
 import { categoryLabels } from '../api/types'
+import { useEffect, useState } from 'react'
 
-export default function Activities({ selectedDate }: { selectedDate?: Date }) {
+export default function Activities({
+  selectedDate,
+  currentDate,
+}: {
+  selectedDate?: Date
+  currentDate: Date
+}) {
   const { push } = useRouter()
   const { monthlyActivities } = useCalendarContext()
+  const [currentYear, setCurrentYear] = useState<number>()
+  const [currentMonth, setCurrentMonth] = useState<number>()
+  const [focusYear, setFocusYear] = useState<number>()
+  const [focusMonth, setFocusMonth] = useState<number>()
+
+  useEffect(() => {
+    const now = Date.now()
+    const currentYearCal = getYear(now)
+    const currentMonthCal = getMonth(now) + 1
+    const focusYearCal = getYear(currentDate)
+    const focusMonthCal = getMonth(currentDate) + 1
+
+    console.log(currentYearCal, currentMonthCal, focusYearCal, focusMonthCal)
+
+    setCurrentYear(currentYearCal)
+    setCurrentMonth(currentMonthCal)
+    setFocusYear(focusYearCal)
+    setFocusMonth(focusMonthCal)
+  }, [monthlyActivities])
 
   const filteredActivities = selectedDate
     ? monthlyActivities?.filter(
@@ -41,13 +69,15 @@ export default function Activities({ selectedDate }: { selectedDate?: Date }) {
         <div className="bg-primary_foundation-5 flex items-center justify-center p-24">
           <div className="mt-35 mb-20 flex flex-col items-center gap-8">
             <h2 className="text-18">아직 모은 시간 조각이 없어요!</h2>
-            <Button
-              onClick={() => push('/home/sg-activity')}
-              className="bg-accent-100 px-20"
-              rightIcon={<Right />}
-            >
-              시간 조각 바로 모으러가기
-            </Button>
+            {currentYear === focusYear && currentMonth === focusMonth && (
+              <Button
+                onClick={() => push('/home/sg-activity')}
+                className="bg-accent-100 px-20"
+                rightIcon={<Right />}
+              >
+                시간 조각 바로 모으러가기
+              </Button>
+            )}
           </div>
         </div>
       </If>
