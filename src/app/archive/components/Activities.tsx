@@ -1,12 +1,12 @@
 'use client'
 
+import { useEffect, useState } from 'react'
 import { format, parseISO, getYear, getMonth } from 'date-fns'
 import { ko } from 'date-fns/locale'
 import { Button, If, Right } from '@/components'
 import { useRouter } from 'next/navigation'
 import { useCalendarContext } from '../api/fetcher'
 import { categoryLabels } from '../api/types'
-import { useEffect, useState } from 'react'
 
 export default function Activities({
   selectedDate,
