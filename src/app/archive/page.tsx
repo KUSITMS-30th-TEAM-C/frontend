@@ -17,7 +17,7 @@ const tabs = [
 ]
 
 export default function ArchivePage() {
-  const [activeTab, setActiveTab] = useState('calendar')
+  const [activeTab, setActiveTab] = useState('keywords')
   const [currentDate, setCurrentDate] = useState(new Date())
 
   const [, startTransition] = useTransition()
