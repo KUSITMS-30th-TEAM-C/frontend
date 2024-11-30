@@ -13,7 +13,7 @@ interface HomeHeaderProps extends StrictPropsWithChildren {
 
 export default function HomeHeader({ children, title }: HomeHeaderProps) {
   const { profileImage } = useUserInfo().userInfo
-  console.log(profileImage)
+  // console.log(profileImage)
   const { push } = useRouter()
   return (
     <div className="flex w-full flex-col relative">

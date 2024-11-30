@@ -8,7 +8,7 @@ import { useQuickStartContext } from './components/Fetcher'
 export default function FastPage() {
   const router = useRouter()
   const { quickStartResponses } = useQuickStartContext()
-  console.log(quickStartResponses)
+  // console.log(quickStartResponses)
 
   return (
     <HeaderWithBack title="빠른 시작" onBack={() => router.back()}>

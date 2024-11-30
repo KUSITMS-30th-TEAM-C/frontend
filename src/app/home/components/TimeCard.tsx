@@ -15,7 +15,7 @@ export default function TimeCard({
   title,
   imgSrc,
 }: TimeCardProps) {
-  console.log(category, 'category')
+  // console.log(category, 'category')
   return (
     <Div className="relative bg-white px-12">
       <div className="">

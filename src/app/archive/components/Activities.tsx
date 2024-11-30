@@ -29,8 +29,6 @@ export default function Activities({
     const focusYearCal = getYear(currentDate)
     const focusMonthCal = getMonth(currentDate) + 1
 
-    console.log(currentYearCal, currentMonthCal, focusYearCal, focusMonthCal)
-
     setCurrentYear(currentYearCal)
     setCurrentMonth(currentMonthCal)
     setFocusYear(focusYearCal)

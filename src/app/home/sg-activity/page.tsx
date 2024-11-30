@@ -27,6 +27,7 @@ export default function SuggestActivity() {
   const [postActivityType, setPostActivityType] = useState('')
   const { spareTime, setSpareTime, address, reset } = useActivityStore()
   const router = useRouter()
+  const [isQuick, setIsQuick] = useState(false)
 
   const handleBack = () => {
     if (step === 1) {
@@ -34,6 +35,11 @@ export default function SuggestActivity() {
       reset()
       router.push('/home')
       return
+    }
+
+    if (isQuick) {
+      setIsQuick(false)
+      router.push('/home')
     }
 
     setStep((prevStep) => {
@@ -99,6 +105,8 @@ export default function SuggestActivity() {
     const quickStartData = localStorage.getItem('quickStart')
     if (quickStartData) {
       const { quickStart } = JSON.parse(quickStartData)
+
+      setIsQuick(true)
       if (quickStart.type === 'ONLINE') {
         setStep(4)
       } else {
@@ -107,6 +115,7 @@ export default function SuggestActivity() {
       setSeletOnOff([quickStart.type === 'ONLINE' ? '온라인' : '오프라인'])
     }
   }, [])
+
   return (
     <div className="w-full h-screen overflow-hidden">
       <HeaderWithBack onBack={handleBack} title="활동 추천받기">
