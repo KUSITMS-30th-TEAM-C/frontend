@@ -20,8 +20,13 @@ export default function MyPageEdit() {
       setError,
     },
   )
-  const { profiles, profileUrl, selectedProfileID, handleProfileSelect } =
-    useProfileSelector()
+  const {
+    profiles,
+    profileUrl,
+    selectedProfileID,
+    handleProfileSelect,
+    isProfileChanged,
+  } = useProfileSelector()
 
   const handleSaveClick = () => {
     mutate(
@@ -94,7 +99,7 @@ export default function MyPageEdit() {
       <div className="absolute bottom-50 w-full py-4 flex justify-center">
         <Button
           className="w-[90%] mx-auto font-semibold"
-          disabled={error}
+          disabled={error && !isProfileChanged}
           onClick={handleSaveClick}
           type="button"
         >
