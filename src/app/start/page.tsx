@@ -1,49 +1,22 @@
 'use client'
 
-import { Button, If } from '@/components/common'
+import { If } from '@/components/common'
 import { useState } from 'react'
 import { cn } from '@/util'
 import { HeaderWithBack } from '@/components'
-import useUserInfo from '@/store/useUserInfo'
 import { Step1, Step2, Step3, Step4 } from './components'
-import { usePostOnboard } from './api/api'
 
 export default function Start() {
   const [step, setStep] = useState(1)
-  const [text, setText] = useState('다음')
-  const [error, setError] = useState(true)
-
-  const { mutate } = usePostOnboard()
-  const { userInfo } = useUserInfo()
 
   const handleBack = () => {
     setStep((prevStep) => Math.max(prevStep - 1, 1))
   }
 
-  const handleNext = () => {
-    setStep((prevStep) => Math.min(prevStep + 1, 4))
-    if (step === 2) {
-      setError(false)
-    } else setError(true)
-
-    if (step === 3) {
-      setError(false)
-      setText('시작하기')
-    }
-    if (step === 4) {
-      mutate({
-        nickname: userInfo.nickname,
-        birthYear: userInfo.birthYear,
-        gender: userInfo.gender,
-        profileImage: userInfo.profileImage,
-      })
-    }
-  }
-
   const progressBarWidth = `${(step / 3) * 100}%`
 
   return (
-    <div className="h-full">
+    <div className="h-full relative">
       <HeaderWithBack
         onBack={handleBack}
         title="조각조각 시작하기"
@@ -58,29 +31,19 @@ export default function Start() {
           />
         </div>
 
-        <div className="h-[80%]">
+        <div className="h-full">
           <If condition={step === 1}>
-            <Step1 setError={setError} />
+            <Step1 setStep={setStep} />
           </If>
           <If condition={step === 2}>
-            <Step2 setError={setError} />
+            <Step2 setStep={setStep} />
           </If>
           <If condition={step === 3}>
-            <Step3 />
+            <Step3 setStep={setStep} />
           </If>
           <If condition={step === 4}>
             <Step4 />
           </If>
-        </div>
-
-        <div className="w-full pt-10 flex justify-center relative">
-          <Button
-            className="w-[90%] mx-auto"
-            disabled={!!error}
-            onClick={handleNext}
-          >
-            {text}
-          </Button>
         </div>
       </HeaderWithBack>
     </div>

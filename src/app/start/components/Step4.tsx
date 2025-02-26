@@ -2,9 +2,21 @@
 
 import useUserInfo from '@/store/useUserInfo'
 import Image from 'next/image'
+import { Button } from '@/components'
+import { usePostOnboard } from '../api/api'
 
 export default function Step4() {
   const { userInfo } = useUserInfo()
+  const { mutate } = usePostOnboard()
+
+  const handleNext = () => {
+    mutate({
+      nickname: userInfo.nickname,
+      birthYear: userInfo.birthYear,
+      gender: userInfo.gender,
+      profileImage: userInfo.profileImage,
+    })
+  }
 
   return (
     <div className="relative h-screen">
@@ -25,6 +37,11 @@ export default function Step4() {
         objectFit="over"
         className="absolute bottom-0 z-1 px-20"
       />
+      <div className="w-full flex justify-center absolute bottom-10">
+        <Button className="w-[90%] mx-auto" onClick={() => handleNext()}>
+          시작하기
+        </Button>
+      </div>
     </div>
   )
 }

@@ -6,8 +6,7 @@ import axios, {
   Method,
   AxiosRequestConfig,
 } from 'axios'
-import Cookies from 'js-cookie'
-import { ACCESS_TOKEN, HTTP_METHODS } from '@/constants'
+import { HTTP_METHODS } from '@/constants'
 import { useLogout } from '@/app/auth/auth'
 import { useRouter } from 'next/navigation'
 import { BaseResponse, ErrorResponse } from './types'
@@ -21,14 +20,14 @@ const axiosInstance: AxiosInstance = axios.create({
 
 axiosInstance.interceptors.request.use(
   async (config: InternalAxiosRequestConfig) => {
-    const accessToken = Cookies.get(ACCESS_TOKEN) as string
+    // const accessToken = Cookies.get(ACCESS_TOKEN) as string
 
-    if (!accessToken) {
-      return config
-    }
-    // const accessTokenTest = process.env.NEXT_PUBLIC_MASTER_TOKEN
+    // if (!accessToken) {
+    //   return config
+    // }
+    // // const accessTokenTest = process.env.NEXT_PUBLIC_MASTER_TOKEN
 
-    config.headers.set('Authorization', `Bearer ${accessToken}`)
+    // config.headers.set('Authorization', `Bearer ${accessToken}`)
     return config
   },
   (error: AxiosError) => {
