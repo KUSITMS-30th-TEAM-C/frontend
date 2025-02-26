@@ -1,7 +1,6 @@
 import { Button, Left } from '@/components'
 import { cn } from '@/util'
 import Image from 'next/image'
-import Head from 'next/head'
 import { useProfileSelector } from '../hooks'
 
 interface StepProps {
