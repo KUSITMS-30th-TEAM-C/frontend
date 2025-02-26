@@ -42,8 +42,8 @@ function LoginCheck() {
       }
 
       const data = await res.json()
-      Cookies.set('accessToken', data.data.accessToken)
-      Cookies.set('role', data.data.userInfo.role)
+      console.log('로그인정보', data)
+      Cookies.set('role', data.data.role)
       setUserInfo({
         ...data.data.userInfo,
         profileImage:
@@ -52,7 +52,7 @@ function LoginCheck() {
       })
 
       // role에 따라 페이지 이동 차이
-      sendUserHomeOrStart(data.data.userInfo.role)
+      sendUserHomeOrStart(data.data.role)
     } catch (error) {
       console.log('Error fetching user data', error)
     }

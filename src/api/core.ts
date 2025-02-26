@@ -20,14 +20,6 @@ const axiosInstance: AxiosInstance = axios.create({
 
 axiosInstance.interceptors.request.use(
   async (config: InternalAxiosRequestConfig) => {
-    // const accessToken = Cookies.get(ACCESS_TOKEN) as string
-
-    // if (!accessToken) {
-    //   return config
-    // }
-    // // const accessTokenTest = process.env.NEXT_PUBLIC_MASTER_TOKEN
-
-    // config.headers.set('Authorization', `Bearer ${accessToken}`)
     return config
   },
   (error: AxiosError) => {
