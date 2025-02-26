@@ -45,9 +45,9 @@ function LoginCheck() {
       console.log('로그인정보', data)
       Cookies.set('role', data.data.role)
       setUserInfo({
-        ...data.data.userInfo,
+        ...data.data,
         profileImage:
-          data.data.userInfo.profileImage ||
+          data.data.profileImage ||
           'https://kr.object.ncloudstorage.com/cnergy-bucket/front_image/profile/profile1.svg',
       })
 
