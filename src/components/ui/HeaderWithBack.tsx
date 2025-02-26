@@ -32,7 +32,7 @@ export default function HeaderWithBack({
       </header>
       <main
         className={cn(
-          'h-[calc(100%-82px)] relative overflow-auto',
+          'h-[calc(100%-52px)] relative overflow-auto',
           mainClassName,
         )}
       >

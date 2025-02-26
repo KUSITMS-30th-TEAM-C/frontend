@@ -36,6 +36,7 @@ export const useNicknameValidator = ({
   }
 
   const handleNicknameChange = (newNickname: string) => {
+    setNickname(newNickname)
     if (newNickname === '') {
       setError(true)
     }
@@ -43,7 +44,6 @@ export const useNicknameValidator = ({
       setErrorMessage('닉네임은 한글/영문/숫자를 포함한 6자 이내만 가능해요.')
       setError(true)
     } else {
-      setNickname(newNickname)
       setErrorMessage('')
       setError(false)
 
