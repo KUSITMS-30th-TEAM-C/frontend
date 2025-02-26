@@ -42,7 +42,6 @@ function LoginCheck() {
       }
 
       const data = await res.json()
-      console.log('로그인정보', data)
       Cookies.set('role', data.data.role)
       setUserInfo({
         ...data.data,
