@@ -45,7 +45,7 @@ export const useNicknameValidator = ({
   }
 
   const debouncedNickname = useDebounce(nickname)
-  
+
   useEffect(() => {
     if (debouncedNickname) {
       checkNickname(debouncedNickname)

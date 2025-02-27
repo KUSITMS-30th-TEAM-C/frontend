@@ -1,6 +1,5 @@
 'use client'
 
-import Cookies from 'js-cookie'
 import { Suspense, useEffect } from 'react'
 import { useSearchParams, useRouter } from 'next/navigation'
 import useUserInfo from '@/store/useUserInfo'
