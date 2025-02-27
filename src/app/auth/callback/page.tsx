@@ -43,7 +43,6 @@ function LoginCheck() {
       }
 
       const data = await res.json()
-      Cookies.set('role', data.data.role)
       setUserInfo({
         ...data.data,
         profileImage:

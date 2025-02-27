@@ -20,6 +20,7 @@ const axiosInstance: AxiosInstance = axios.create({
 
 axiosInstance.interceptors.request.use(
   async (config: InternalAxiosRequestConfig) => {
+    
     return config
   },
   (error: AxiosError) => {
