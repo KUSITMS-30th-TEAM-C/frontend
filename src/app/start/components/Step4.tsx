@@ -1,13 +1,13 @@
-'use client'
-
 import useUserInfo from '@/store/useUserInfo'
 import Image from 'next/image'
 import { Button } from '@/components'
 import { usePostOnboard } from '../api/api'
+import { useRouter } from 'next/navigation'
 
 export default function Step4() {
   const { userInfo } = useUserInfo()
   const { mutate } = usePostOnboard()
+  const { push } = useRouter()
 
   const handleNext = () => {
     mutate({
@@ -16,12 +16,13 @@ export default function Step4() {
       gender: userInfo.gender,
       profileImage: userInfo.profileImage,
     })
+    push('/home')
   }
 
   return (
     <>
-      <div className="relative h-full">
-        <div className="absolute w-screen h-full bg-gradient-to-b from-white via-[#fffbfb] to-[#ffa89c]" />
+      <div className="h-full">
+        <div className="absolute w-full h-full bg-gradient-to-b from-white via-[#fffbfb] to-[#ffa89c]" />
         <div className="absolute flex flex-col items-center mt-30 w-full h-320 white-gradient z-10">
           <h2 className="text-primary_foundation_60 relative">
             환영해요, {userInfo.nickname}님!

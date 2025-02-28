@@ -18,7 +18,7 @@ export default function Start() {
           {[Step1, Step2, Step3, Step4].map((StepComponent, index) => (
             <div
               key={index}
-              className={cn('none', step === index + 1 && 'block')}
+              className={cn('hidden', step === index + 1 && 'block')}
             >
               <StepComponent setStep={setStep} />
             </div>

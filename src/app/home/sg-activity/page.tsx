@@ -24,7 +24,7 @@ export default function SuggestActivity() {
 
   const [selectedActivity, setSeletedActivity] = useState<ActivityData>()
   const [activityLink, setActivityLink] = useState('')
-  const [postActivityType, setPostActivityType] = useState('')
+  const [postActivityType, setPostActivityType] = useState('ONLINE')
   const { spareTime, setSpareTime, address, reset } = useActivityStore()
   const router = useRouter()
   const [isQuick, setIsQuick] = useState(false)
@@ -108,16 +108,18 @@ export default function SuggestActivity() {
 
       setIsQuick(true)
       if (quickStart.type === 'ONLINE') {
+        setPostActivityType('ONLINE')
         setStep(4)
       } else {
         setStep(3)
+        setPostActivityType('OFFLINE')
       }
       setSeletOnOff([quickStart.type === 'ONLINE' ? '온라인' : '오프라인'])
     }
   }, [])
 
   return (
-    <div className="w-full h-screen overflow-hidden">
+    <div className="w-full overflow-hidden">
       <HeaderWithBack onBack={handleBack} title="활동 추천받기">
         <div className={cn('relative mt-15 mx-20', step === 5 && 'opacity-0')}>
           <div className="bg-black h-10 w-10 absolute bottom-0" />
@@ -155,7 +157,7 @@ export default function SuggestActivity() {
         </div>
 
         {!isSuggestLoading && (
-          <div className="absolute bottom-50 w-full py-4 flex justify-center">
+          <div className="absolute bottom-30 w-full py-4 flex justify-center">
             <Button
               className={`w-[90%] mx-auto ${text === '이 활동하기' && 'bg-accent_100 px-16 justify-between'}`}
               disabled={!!error}

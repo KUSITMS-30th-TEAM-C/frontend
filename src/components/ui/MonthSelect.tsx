@@ -16,7 +16,7 @@ export default function MonthSelect({
 
   const months = Array.from(
     { length: differenceInMonths(today, registrationDate) + 2 },
-    (_, i) => addMonths(registrationDate, i - 1),
+    (_, i) => addMonths(today, -i + 1),
   )
 
   const handleMonthSelect = (date: Date) => {

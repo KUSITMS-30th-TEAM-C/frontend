@@ -1,5 +1,5 @@
 .title {
-  @apply text-2xl font-semibold leading-34 mt-24 mb-40;
+  @apply text-2xl font-semibold leading-34 pt-24 mb-40;
 }
 
 .subtitle {
@@ -18,7 +18,7 @@
   backdrop-filter: blur(1.5px);
 }
 
-.red-gradient {
+.bg-red-gradient {
   background: lightgray no-repeat;
   background-position: -28.718px -19.943px;
   background-size: 116.364% 116.364%;

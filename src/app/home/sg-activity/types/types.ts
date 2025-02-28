@@ -42,3 +42,10 @@ export interface ActivityRecommendRequest {
   keywords: string[]
   location?: string
 }
+
+export interface ActivityStartRequest {
+  spareTime: number
+  type: 'OFFLINE' | 'ONLINE' | 'ONLINE_AND_OFFLINE' | ''
+  keywords: string[]
+  location?: string
+}
