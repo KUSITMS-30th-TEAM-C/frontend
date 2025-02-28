@@ -2,6 +2,7 @@ import { AsyncBoundaryWithQuery } from '@/react-utils'
 import { StrictPropsWithChildren } from '@/types'
 import type { Metadata } from 'next'
 import { MyPageFetcher } from './components/fetcher'
+import Loading from '@/components/ui/Loading'
 
 export const metadata: Metadata = {
   title: '나의 시간조각을 모아, 조각조각',
@@ -11,7 +12,7 @@ export const metadata: Metadata = {
 export default function MyPageLayout({ children }: StrictPropsWithChildren) {
   return (
     <AsyncBoundaryWithQuery
-      pendingFallback={<>Loading...</>}
+      pendingFallback={<Loading />}
       errorFallback={<>error..</>}
     >
       <MyPageFetcher>{children}</MyPageFetcher>
