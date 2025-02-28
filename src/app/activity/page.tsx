@@ -2,14 +2,11 @@
 
 import { useRouter } from 'next/navigation'
 import { useEffect, useState, useRef } from 'react'
-import Cookies from 'js-cookie'
 import { Button } from '@/components'
 import useUserInfo from '@/store/useUserInfo'
-import {
-  SeletedActivityDone,
-  SelectedActivityResponse,
-} from '@/types/activityTypes'
+import { SeletedActivityDone } from '@/types/activityTypes'
 import Image from 'next/image'
+import { usePatchActivityDone, usePostSelectedData } from './api/queries'
 
 export default function ActivityPage() {
   const router = useRouter()
@@ -21,41 +18,43 @@ export default function ActivityPage() {
   const [elapsedTime, setElapsedTime] = useState<number>(0)
   const [activityId, setActivityId] = useState<number>(0)
   const [spareTimeLocal, setSpareTimeLocal] = useState<number>()
-  const [accessToken, setAccessToken] = useState<string>()
 
   // 타이머 ID를 useRef로 관리하여 리렌더링 방지
   const intervalId = useRef<number | null>(null)
   const timeoutId = useRef<number | null>(null)
 
-  const activityDone = async () => {
-    if (localStorage.getItem('activityCompleted')) {
-      return
-    }
+  const { mutate: activityPatch } = usePatchActivityDone()
+  const { mutate: postSeletData } = usePostSelectedData()
 
-    try {
-      const activityDonePatch = await fetch(
-        `https://cnergy.p-e.kr/v1/activities/${activityId}/finish`,
-        {
-          method: 'PATCH',
-          headers: {
-            'Content-Type': 'application/json',
-            Authorization: `Bearer ${accessToken}`,
-          },
-        },
-      )
+  // const activityDone = async () => {
+  //   if (localStorage.getItem('activityCompleted')) {
+  //     return
+  //   }
 
-      if (!activityDonePatch.ok) {
-        throw new Error(`HTTP error! status: ${activityDonePatch.status}`)
-      }
+  //   try {
+  //     const activityDonePatch = await fetch(
+  //       `https://cnergy.p-e.kr/v1/activities/${activityId}/finish`,
+  //       {
+  //         method: 'PATCH',
+  //         headers: {
+  //           'Content-Type': 'application/json',
+  //           Authorization: `Bearer ${accessToken}`,
+  //         },
+  //       },
+  //     )
 
-      const toJson = await activityDonePatch.json()
-      console.log('받은 데이터', toJson)
+  //     if (!activityDonePatch.ok) {
+  //       throw new Error(`HTTP error! status: ${activityDonePatch.status}`)
+  //     }
 
-      localStorage.setItem('activityCompleted', 'true')
-    } catch (error) {
-      console.error('Error sending POST request:', error)
-    }
-  }
+  //     const toJson = await activityDonePatch.json()
+  //     console.log('받은 데이터', toJson)
+
+  //     localStorage.setItem('activityCompleted', 'true')
+  //   } catch (error) {
+  //     console.error('Error sending POST request:', error)
+  //   }
+  // }
 
   const calculateSavedTime = (spareTime: number, elapsedMinutes: number) => {
     let savedTime: number = 0
@@ -82,7 +81,7 @@ export default function ActivityPage() {
 
     if (remainingTimeMsRm <= 0) {
       setIsTimeUp(true)
-      activityDone()
+      activityPatch(activityId)
 
       if (intervalId.current !== null) {
         clearInterval(intervalId.current)
@@ -104,7 +103,6 @@ export default function ActivityPage() {
       return () => {}
     }
 
-    const token = Cookies.get('accessToken')
     const selectedActivityLocal: SeletedActivityDone =
       JSON.parse(getActivityData)
     const spareTimeInUseEffect = selectedActivityLocal.spareTime
@@ -113,38 +111,43 @@ export default function ActivityPage() {
     const now = Date.now()
     const remainActivityId = localStorage.getItem('activityId')
 
-    setAccessToken(token)
     setSpareTimeLocal(spareTimeInUseEffect)
 
-    const postSelectData = async () => {
-      try {
-        const response = await fetch('https://cnergy.p-e.kr/v1/activities', {
-          method: 'POST',
-          body: JSON.stringify(selectedActivityLocal),
-          headers: {
-            'Content-Type': 'application/json',
-            Authorization: `Bearer ${token}`,
-          },
-        })
+    // const postSelectData = async () => {
+    //   try {
+    //     const response = await fetch('https://cnergy.p-e.kr/v1/activities', {
+    //       method: 'POST',
+    //       body: JSON.stringify(selectedActivityLocal),
+    //       headers: {
+    //         'Content-Type': 'application/json',
+    //         Authorization: `Bearer ${token}`,
+    //       },
+    //     })
 
-        if (!response.ok) {
-          throw new Error(`HTTP error! status: ${response.status}`)
-        }
+    //     if (!response.ok) {
+    //       throw new Error(`HTTP error! status: ${response.status}`)
+    //     }
 
-        const { data } = await response.json()
-        const responseData: SelectedActivityResponse = data
-        console.log('받은 데이터', responseData)
+    //     const { data } = await response.json()
+    //     const responseData: SelectedActivityResponse = data
+    //     console.log('받은 데이터', responseData)
 
-        localStorage.setItem('activityId', responseData.id.toString())
+    //     localStorage.setItem('activityId', responseData.id.toString())
 
-        setActivityId(responseData.id)
-      } catch (error) {
-        console.error('Error sending POST request:', error)
-      }
-    }
+    //     setActivityId(responseData.id)
+    //   } catch (error) {
+    //     console.error('Error sending POST request:', error)
+    //   }
+    // }
 
     if (!remainActivityId) {
-      postSelectData()
+      postSeletData(selectedActivityLocal, {
+        onSuccess: (data) => {
+          const response = data.data
+          localStorage.setItem('activityId', response.id.toString())
+          setActivityId(response.id)
+        },
+      })
     } else {
       setActivityId(parseInt(remainActivityId, 10))
     }
@@ -170,11 +173,11 @@ export default function ActivityPage() {
     if (elapsed >= spareTimeMs) {
       // 시간이 이미 지난 경우
       setIsTimeUp(true)
-      activityDone()
+      activityPatch(activityId)
     } else {
       timeoutId.current = window.setTimeout(() => {
         setIsTimeUp(true)
-        activityDone()
+        activityPatch(activityId)
       }, remainingTimeMs)
       updateRemainingTime(startTimeValue, spareTimeMs)
 
@@ -223,7 +226,7 @@ export default function ActivityPage() {
         setElapsedTime(0)
       }
 
-      activityDone()
+      activityPatch(activityId)
     }
 
     // 활동 종료 처리

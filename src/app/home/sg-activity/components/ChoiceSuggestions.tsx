@@ -1,7 +1,6 @@
 'use client'
 
 import { useEffect, useState } from 'react'
-import Cookies from 'js-cookie'
 import useUserInfo from '@/store/useUserInfo'
 import { useActivityStore } from '@/store/activityStore'
 
@@ -13,11 +12,12 @@ import 'swiper/css/navigation'
 import 'swiper/css/pagination'
 import { Pagination } from 'swiper/modules'
 
-import { ActivityData, ActivityResponse } from '@/types/activityTypes'
+import { ActivityData } from '@/types/activityTypes'
 
-import { ChoiceSuggestionProps } from '../types/types'
+import { ActivityRecommendRequest, ChoiceSuggestionProps } from '../types/types'
 import '../styles/choicesuggestion.css'
 import SuggestionWait from './SuggestionWait'
+import { usePostActivity } from '../api/queries'
 
 const getActiveType = (typeArr: string[]) => {
   if (typeArr.length >= 2) {
@@ -46,12 +46,13 @@ export default function ChoiceSuggestion({
   const { spareTime, activityType, keywords, address } = useActivityStore()
   const [responseData, setResponseData] = useState<ActivityData[]>()
   const activeType = getActiveType(activityType)
-  const postData = {
+  const postData: ActivityRecommendRequest = {
     spareTime: parseInt(spareTime, 10),
     activityType: activeType,
     keywords,
     ...(address && { location: address }),
   }
+  const { mutate: postActivity } = usePostActivity()
 
   useEffect(() => {
     setError(false)
@@ -65,45 +66,59 @@ export default function ChoiceSuggestion({
       postData.spareTime = quickStart.spareTime
     }
 
-    const fetchData = async () => {
-      // console.log('보내는 데이터 확인', postData)
-      try {
-        setIsSuggestLoading(true)
+    // const fetchData = async () => {
+    //   // console.log('보내는 데이터 확인', postData)
+    //   try {
+    //     setIsSuggestLoading(true)
 
-        const accessToken = Cookies.get('accessToken')
+    //     const accessToken = Cookies.get('accessToken')
 
-        const response = await fetch(
-          'https://cnergy.p-e.kr/v1/recommendations',
-          {
-            method: 'POST',
-            body: JSON.stringify(postData),
-            headers: {
-              'Content-Type': 'application/json',
-              Authorization: `Bearer ${accessToken}`,
-            },
-          },
-        )
+    //     const response = await fetch(
+    //       'https://cnergy.p-e.kr/v1/recommendations',
+    //       {
+    //         method: 'POST',
+    //         body: JSON.stringify(postData),
+    //         headers: {
+    //           'Content-Type': 'application/json',
+    //           Authorization: `Bearer ${accessToken}`,
+    //         },
+    //       },
+    //     )
 
-        if (!response.ok) {
-          throw new Error(`HTTP error! status: ${response.status}`)
-        }
+    //     if (!response.ok) {
+    //       throw new Error(`HTTP error! status: ${response.status}`)
+    //     }
 
-        const toJson: ActivityResponse = await response.json()
-        // console.log('받은 데이터', toJson)
+    //     const toJson: ActivityResponse = await response.json()
+    //     // console.log('받은 데이터', toJson)
+    //     const mergeArr = [
+    //       ...toJson.data.offlineRecommendations,
+    //       ...toJson.data.onlineRecommendations,
+    //     ]
+    //     // console.log('데이터', mergeArr)
+    //     setResponseData(mergeArr)
+    //   } catch (error) {
+    //     console.error('Error sending POST request:', error)
+    //   } finally {
+    //     setIsSuggestLoading(false)
+    //   }
+    // }
+
+    setIsSuggestLoading(true)
+
+    postActivity(postData, {
+      onSuccess: (data) => {
+        const response = data.data
+
         const mergeArr = [
-          ...toJson.data.offlineRecommendations,
-          ...toJson.data.onlineRecommendations,
+          ...response.offlineRecommendations,
+          ...response.onlineRecommendations,
         ]
-        // console.log('데이터', mergeArr)
-        setResponseData(mergeArr)
-      } catch (error) {
-        console.error('Error sending POST request:', error)
-      } finally {
-        setIsSuggestLoading(false)
-      }
-    }
 
-    fetchData()
+        setResponseData(mergeArr)
+        setIsSuggestLoading(false)
+      },
+    })
 
     return () => {
       setIsSuggestLoading(false)

@@ -35,3 +35,10 @@ export interface LocationDataType {
   x: string
   y: string
 }
+
+export interface ActivityRecommendRequest {
+  spareTime: number
+  activityType: 'OFFLINE' | 'ONLINE' | 'ONLINE_AND_OFFLINE' | ''
+  keywords: string[]
+  location?: string
+}

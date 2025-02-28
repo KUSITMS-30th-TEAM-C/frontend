@@ -5,13 +5,13 @@ import Image from 'next/image'
 import { useEffect, useState } from 'react'
 import { format, getMonth, getYear, parseISO } from 'date-fns'
 import { ko } from 'date-fns/locale'
-import Cookies from 'js-cookie'
 import { IconLeft, Clock } from '@/components'
 import useUserInfo from '@/store/useUserInfo'
 import { useMonthTotalCount } from '@/store/monthCount'
 import { KeywordMonthDataResponse, MonthActivity } from './types/type'
 import { transKeyword } from '../components/Treemap/Treemap'
 import OverviewHeaderForDetail from '../components/OverviewHeaderForDetail'
+import { useGetKeywordMonthData } from '../api/queries'
 
 export default function KeywordDetailPage() {
   const searchParams = useSearchParams()
@@ -19,7 +19,7 @@ export default function KeywordDetailPage() {
   const { nickname } = useUserInfo().userInfo
   const { setMonthCount } = useMonthTotalCount()
 
-  const [accessToken, setAccessToken] = useState('')
+  // const [accessToken, setAccessToken] = useState('')
   const [currentDate, setCurrentDate] = useState(new Date())
   const [keyword, setKeyword] = useState('')
   const [isInitialized, setIsInitialized] = useState(false)
@@ -29,12 +29,17 @@ export default function KeywordDetailPage() {
   const [activitiesByDate, setActivitiesByDate] =
     useState<Record<string, MonthActivity[] | undefined>>()
 
-  useEffect(() => {
-    const token = Cookies.get('accessToken')
+  const [year, setYear] = useState<number>(0)
+  const [month, setMonth] = useState<number>(0)
 
-    if (token) {
-      setAccessToken(token)
-    }
+  const { data, isError } = useGetKeywordMonthData(year, month, keyword)
+
+  useEffect(() => {
+    // const token = Cookies.get('accessToken')
+
+    // if (token) {
+    //   setAccessToken(token)
+    // }
 
     const queryYear = searchParams.get('year')
     const queryMonth = searchParams.get('month')
@@ -51,41 +56,48 @@ export default function KeywordDetailPage() {
     }
   }, [])
 
-  const getMonthData = async (
-    reqyear: number,
-    reqmonth: number,
-    reqkeyword: string,
-  ) => {
-    try {
-      const response = await fetch(
-        `https://cnergy.p-e.kr/v1/activities?year=${reqyear}&month=${reqmonth}&keywordCategory=${reqkeyword}`,
-        {
-          method: 'GET',
-          headers: {
-            'Content-Type': 'application/json',
-            Authorization: `Bearer ${accessToken}`,
-          },
-        },
-      )
+  // const getMonthData = async (
+  //   reqyear: number,
+  //   reqmonth: number,
+  //   reqkeyword: string,
+  // ) => {
+  //   try {
+  //     const response = await fetch(
+  //       `https://cnergy.p-e.kr/v1/activities?year=${reqyear}&month=${reqmonth}&keywordCategory=${reqkeyword}`,
+  //       {
+  //         method: 'GET',
+  //         headers: {
+  //           'Content-Type': 'application/json',
+  //           Authorization: `Bearer ${accessToken}`,
+  //         },
+  //       },
+  //     )
 
-      if (!response.ok) {
-        throw new Error(`HTTP error! status: ${response.status}`)
-      }
+  //     if (!response.ok) {
+  //       throw new Error(`HTTP error! status: ${response.status}`)
+  //     }
 
-      const { data } = await response.json()
+  //     const { data } = await response.json()
 
-      setMonthCount(data.totalActivityCountByKeywordInMonth)
-      setKeywordData(data)
-    } catch (error) {
-      console.error('Error sending POST request:', error)
-    }
-  }
+  //     setMonthCount(data.totalActivityCountByKeywordInMonth)
+  //     setKeywordData(data)
+  //   } catch (error) {
+  //     console.error('Error sending POST request:', error)
+  //   }
+  // }
 
   useEffect(() => {
     if (isInitialized) {
-      const year = getYear(currentDate)
-      const month = getMonth(currentDate) + 1
-      getMonthData(year, month, keyword)
+      const nowYear = getYear(currentDate)
+      const nowMonth = getMonth(currentDate) + 1
+
+      setYear(nowYear)
+      setMonth(nowMonth)
+
+      if (data && !isError) {
+        setMonthCount(data.data.totalActivityCountByKeywordInMonth)
+        setKeywordData(data.data)
+      }
     }
   }, [keyword, currentDate])
 

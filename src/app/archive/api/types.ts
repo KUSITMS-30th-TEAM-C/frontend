@@ -54,3 +54,21 @@ export const categoryLabels: Record<string, string> = {
   RELAXATION: '휴식',
   SOCIAL: '소셜',
 }
+
+export interface KeywordActivityData {
+  title: string
+  savedTime: number
+  dateOfActivity: string
+}
+
+export interface KeyWordData {
+  category: Category
+  image: string
+}
+
+export interface KeywordMontDataResponse {
+  totalSavedTimeByKeywordInMonth: number
+  totalActivityCountByKeywordInMonth: number
+  activities: KeywordActivityData[]
+  Keyword: KeyWordData
+}
