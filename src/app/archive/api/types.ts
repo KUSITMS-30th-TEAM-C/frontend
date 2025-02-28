@@ -66,7 +66,7 @@ export interface KeyWordData {
   image: string
 }
 
-export interface keywordMontDataResponse {
+export interface KeywordMontDataResponse {
   totalSavedTimeByKeywordInMonth: number
   totalActivityCountByKeywordInMonth: number
   activities: KeywordActivityData[]

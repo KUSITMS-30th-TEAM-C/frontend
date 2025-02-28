@@ -12,7 +12,7 @@ import 'swiper/css/navigation'
 import 'swiper/css/pagination'
 import { Pagination } from 'swiper/modules'
 
-import { ActivityData, ActivityResponse } from '@/types/activityTypes'
+import { ActivityData } from '@/types/activityTypes'
 
 import { ActivityRecommendRequest, ChoiceSuggestionProps } from '../types/types'
 import '../styles/choicesuggestion.css'

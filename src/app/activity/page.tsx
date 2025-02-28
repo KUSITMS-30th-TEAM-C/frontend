@@ -2,13 +2,9 @@
 
 import { useRouter } from 'next/navigation'
 import { useEffect, useState, useRef } from 'react'
-import Cookies from 'js-cookie'
 import { Button } from '@/components'
 import useUserInfo from '@/store/useUserInfo'
-import {
-  SeletedActivityDone,
-  SelectedActivityResponse,
-} from '@/types/activityTypes'
+import { SeletedActivityDone } from '@/types/activityTypes'
 import Image from 'next/image'
 import { usePatchActivityDone, usePostSelectedData } from './api/queries'
 
