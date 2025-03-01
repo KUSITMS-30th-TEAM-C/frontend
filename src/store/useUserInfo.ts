@@ -24,8 +24,7 @@ const defaultState: UserInfo = {
   nickname: '',
   gender: 'FEMALE',
   birthYear: '',
-  profileImage:
-    'https://kr.object.ncloudstorage.com/cnergy-bucket/front_image/profile/profile1.svg',
+  profileImage: `/profile/profile1.svg`,
   registrationDate: new Date(2023, 4, 1),
   role: 'GUEST',
 }

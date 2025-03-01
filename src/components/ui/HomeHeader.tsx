@@ -6,6 +6,7 @@ import { cn } from '@/util'
 import Image from 'next/image'
 import useUserInfo from '@/store/useUserInfo'
 import { useRouter } from 'next/navigation'
+import { IMAGE_URL } from '@/constants'
 
 interface HomeHeaderProps extends StrictPropsWithChildren {
   title: string
@@ -13,7 +14,7 @@ interface HomeHeaderProps extends StrictPropsWithChildren {
 
 export default function HomeHeader({ children, title }: HomeHeaderProps) {
   const { profileImage } = useUserInfo().userInfo
-  // console.log(profileImage)
+
   const { push } = useRouter()
   return (
     <div className="flex w-full flex-col relative">
@@ -37,7 +38,7 @@ export default function HomeHeader({ children, title }: HomeHeaderProps) {
         >
           <Image
             alt="profile"
-            src={profileImage}
+            src={IMAGE_URL + profileImage}
             width={208}
             height={208}
             className="p-1"

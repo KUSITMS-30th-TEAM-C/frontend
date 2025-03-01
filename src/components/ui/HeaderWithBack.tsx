@@ -30,12 +30,7 @@ export default function HeaderWithBack({
         />
         <span>{title}</span>
       </header>
-      <main
-        className={cn(
-          'h-[calc(100%-52px)] overflow-auto',
-          mainClassName,
-        )}
-      >
+      <main className={cn('h-[calc(100%-52px)] overflow-auto', mainClassName)}>
         {children}
       </main>
     </div>

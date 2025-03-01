@@ -5,6 +5,7 @@ import useUserInfo from '@/store/useUserInfo'
 import { useRouter } from 'next/navigation'
 import Image from 'next/image'
 import { useState } from 'react'
+import { IMAGE_URL } from '@/constants'
 import { useMyPageContext } from './components/fetcher'
 import { usePatchAlarm } from './api/queries'
 import { useLogout } from '../auth/auth'
@@ -54,7 +55,7 @@ export default function MyPage() {
 
           <div className="relative w-140 h-140 rounded-full overflow-hidden border-2 bg-accent-10 border-accent-30 flex items-center justify-center">
             <Image
-              src={profileImage}
+              src={IMAGE_URL + profileImage}
               alt="프로필 이미지"
               width={100}
               height={100}

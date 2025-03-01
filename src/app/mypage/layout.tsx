@@ -1,8 +1,8 @@
 import { AsyncBoundaryWithQuery } from '@/react-utils'
 import { StrictPropsWithChildren } from '@/types'
 import type { Metadata } from 'next'
-import { MyPageFetcher } from './components/fetcher'
 import Loading from '@/components/ui/Loading'
+import { MyPageFetcher } from './components/fetcher'
 
 export const metadata: Metadata = {
   title: '나의 시간조각을 모아, 조각조각',

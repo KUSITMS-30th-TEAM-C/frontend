@@ -8,4 +8,3 @@ export const postSuggestData = (data: ActivityRecommendRequest) => {
     data,
   })
 }
-

@@ -14,3 +14,6 @@ export const HTTP_METHODS: Record<
 export const ACCESS_TOKEN = 'accessToken' as const
 export const REFRESH_TOKEN = 'refreshToken' as const
 export const BLOG_ID = 'blogId' as const
+
+export const IMAGE_URL =
+  'https://kr.object.ncloudstorage.com/cnergy-bucket/front_image' as const

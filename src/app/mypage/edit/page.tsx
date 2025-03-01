@@ -6,14 +6,16 @@ import useUserInfo from '@/store/useUserInfo'
 import { cn } from '@/util'
 import Image from 'next/image'
 import { useRouter } from 'next/navigation'
-import { ChangeEvent, useState } from 'react'
+import { ChangeEvent, useEffect, useState } from 'react'
+import { IMAGE_URL } from '@/constants'
 import { usePatchMyPage } from '../api/queries'
 
 export default function MyPageEdit() {
   const { push } = useRouter()
   const { userInfo, setUserInfo } = useUserInfo()
   const { mutate } = usePatchMyPage()
-  const [error, setError] = useState<boolean>(true)
+  const [error, setError] = useState<boolean>(false)
+  const [isChanged, setIsChanged] = useState<boolean>(false)
   const { nickname, errorMessage, handleNicknameChange } = useNicknameValidator(
     {
       initialNickname: userInfo.nickname,
@@ -24,10 +26,14 @@ export default function MyPageEdit() {
     useProfileSelector()
 
   const handleSaveClick = () => {
+    setUserInfo({
+      ...userInfo,
+      profileImage: profileUrl,
+    })
     mutate(
       {
         nickname,
-        profileImage: selectedProfileID,
+        profileImage: profileUrl,
       },
       {
         onSuccess: () => {
@@ -41,6 +47,18 @@ export default function MyPageEdit() {
       },
     )
   }
+
+  useEffect(() => {
+    console.log(profileUrl)
+    if (
+      userInfo.profileImage !== profileUrl ||
+      userInfo.nickname !== nickname
+    ) {
+      setIsChanged(true)
+    } else {
+      setIsChanged(false)
+    }
+  }, [profileUrl, nickname, userInfo])
 
   return (
     <HeaderWithBack title="프로필 수정하기" onBack={() => push('/mypage')}>
@@ -57,11 +75,9 @@ export default function MyPageEdit() {
             handleNicknameChange(e.target.value)
           }
         />
-
         <h2 className="text-lg font-semibold leading-relaxed mt-44">
           프로필 이미지 수정하기
         </h2>
-
         <div className="grid grid-cols-4 gap-y-22 gap-x-10 w-full justify-items-stretch mt-16">
           {profiles.map((id) => (
             <button
@@ -79,10 +95,9 @@ export default function MyPageEdit() {
                   <Left />
                 </div>
               )}
-
               <Image
                 alt="profile image"
-                src={`/image/profile/profile${id}.svg`}
+                src={`${IMAGE_URL}/profile/profile${id}.svg`}
                 layout="fill"
                 objectFit="cover"
                 className="p-5"
@@ -94,7 +109,7 @@ export default function MyPageEdit() {
       <div className="absolute bottom-50 w-full py-4 flex justify-center">
         <Button
           className="w-[90%] mx-auto font-semibold"
-          disabled={error}
+          disabled={!isChanged || error}
           onClick={handleSaveClick}
           type="button"
         >

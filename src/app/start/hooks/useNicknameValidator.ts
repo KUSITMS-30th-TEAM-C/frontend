@@ -20,6 +20,8 @@ export const useNicknameValidator = ({
   }
 
   const checkNickname = async (name: string) => {
+    if (name === initialNickname) return
+
     try {
       const response = await getNicknamePossible(name)
       if (!response.data) {

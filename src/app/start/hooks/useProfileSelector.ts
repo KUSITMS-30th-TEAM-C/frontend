@@ -9,9 +9,6 @@ interface UseProfileSelectorReturn {
 }
 
 export const useProfileSelector = (): UseProfileSelectorReturn => {
-  const PROFILE_BASE_URL =
-    'https://kr.object.ncloudstorage.com/cnergy-bucket/front_image/profile'
-
   const { userInfo, setUserInfo } = useUserInfo()
   const profiles = ['1', '2', '3', '4', '5', '6']
 
@@ -30,10 +27,6 @@ export const useProfileSelector = (): UseProfileSelectorReturn => {
   const handleProfileSelect = useCallback(
     (profile: string) => {
       setSelectedProfileID(profile)
-      setUserInfo({
-        ...userInfo,
-        profileImage: `${PROFILE_BASE_URL}/profile${profile}.svg`,
-      })
     },
     [userInfo, setUserInfo],
   )
@@ -41,7 +34,7 @@ export const useProfileSelector = (): UseProfileSelectorReturn => {
   return {
     profiles,
     selectedProfileID,
-    profileUrl: `${PROFILE_BASE_URL}/profile${selectedProfileID}.svg`,
+    profileUrl: `/profile/profile${selectedProfileID}.svg`,
     handleProfileSelect,
   }
 }

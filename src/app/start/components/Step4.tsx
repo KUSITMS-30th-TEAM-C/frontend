@@ -1,8 +1,8 @@
 import useUserInfo from '@/store/useUserInfo'
 import Image from 'next/image'
 import { Button } from '@/components'
-import { usePostOnboard } from '../api/api'
 import { useRouter } from 'next/navigation'
+import { usePostOnboard } from '../api/api'
 
 export default function Step4() {
   const { userInfo } = useUserInfo()
