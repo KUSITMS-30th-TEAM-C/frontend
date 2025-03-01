@@ -1,3 +1,5 @@
+import { GenderType } from '@/store/useUserInfo'
+
 export interface QuickStart {
   id?: number
   name: string
@@ -37,4 +39,14 @@ export interface HomeResponse {
     title: string
     savedTime: number
   }[]
+}
+
+export interface LoginResponse {
+  role: 'MEMBER' | 'GUEST'
+  email: string
+  nickname: string
+  birthYear: string
+  gender: GenderType
+  profileImage: string
+  registrationDate: Date
 }

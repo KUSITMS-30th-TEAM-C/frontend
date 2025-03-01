@@ -4,6 +4,7 @@ import { Suspense, useEffect } from 'react'
 import { useSearchParams, useRouter } from 'next/navigation'
 import useUserInfo from '@/store/useUserInfo'
 import Loading from '@/components/ui/Loading'
+import { getLogin } from '@/app/home/api/api'
 import { SendData } from './type'
 
 function LoginCheck() {
@@ -21,7 +22,7 @@ function LoginCheck() {
   }
 
   const getUserData = async (socialType: string, sendDataArr: SendData[]) => {
-    let url: string = `https://cnergy.p-e.kr/v1/oauth/login/${socialType}?`
+    let url: string = `/oauth/login/${socialType}?`
     for (let i = 0; i < sendDataArr.length; i += 1) {
       if (i === 0) {
         url += `${sendDataArr[i].name}=${sendDataArr[i].value}`
@@ -33,23 +34,15 @@ function LoginCheck() {
     }
 
     try {
-      const res = await fetch(url, {
-        method: 'GET',
-        credentials: 'include',
-      })
+      const { data } = await getLogin(url)
 
-      if (!res.ok) {
-        throw new Error(`HTTP error! status: ${res.status}`)
-      }
-
-      const data = await res.json()
       setUserInfo({
-        ...data.data,
+        ...data,
         profileImage: '/profile/profile3.svg',
       })
 
       // role에 따라 페이지 이동 차이
-      sendUserHomeOrStart(data.data.role)
+      sendUserHomeOrStart(data.role)
     } catch (error) {
       console.log('Error fetching user data', error)
     }
