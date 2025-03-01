@@ -3,6 +3,7 @@
 import { Suspense, useEffect } from 'react'
 import { useSearchParams, useRouter } from 'next/navigation'
 import useUserInfo from '@/store/useUserInfo'
+import Loading from '@/components/ui/Loading'
 import { SendData } from './type'
 
 function LoginCheck() {
@@ -81,7 +82,7 @@ function LoginCheck() {
 
 export default function WrappedLoginCheck() {
   return (
-    <Suspense fallback={<div>로딩 중...</div>}>
+    <Suspense fallback={<Loading />}>
       <LoginCheck />
     </Suspense>
   )
