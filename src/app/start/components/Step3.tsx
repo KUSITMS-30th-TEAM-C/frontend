@@ -1,6 +1,7 @@
 import { Button, Left } from '@/components'
 import { cn } from '@/util'
 import Image from 'next/image'
+import { IMAGE_URL } from '@/constants'
 import { useProfileSelector } from '../hooks'
 
 interface StepProps {
@@ -31,7 +32,7 @@ export default function Step3({ setStep }: StepProps) {
               <div className="absolute inset-0 bg-accent-10 blur-[20px] -z-10 rounded-full" />
               <Image
                 alt="image"
-                src={`/image/profile/profile${id}.svg`}
+                src={`${IMAGE_URL}/profile/profile${id}.svg`}
                 width={200}
                 height={200}
                 priority
@@ -60,7 +61,7 @@ export default function Step3({ setStep }: StepProps) {
               )}
               <Image
                 alt="image"
-                src={`/image/profile/profile${id}.svg`}
+                src={`${IMAGE_URL}/profile/profile${id}.svg`}
                 layout="fill"
                 objectFit="cover"
                 className="p-5"

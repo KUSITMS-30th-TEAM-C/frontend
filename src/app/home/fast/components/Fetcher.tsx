@@ -17,6 +17,7 @@ export const [QuickStartProvider, useQuickStartContext] =
 
 export function HomeFetcher({ children }: StrictPropsWithChildren) {
   const { data } = useGetHomeData()
+
   return <HomeProvider {...data}>{children}</HomeProvider>
 }
 

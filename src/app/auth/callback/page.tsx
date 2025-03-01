@@ -45,9 +45,7 @@ function LoginCheck() {
       const data = await res.json()
       setUserInfo({
         ...data.data,
-        profileImage:
-          data.data.profileImage ||
-          'https://kr.object.ncloudstorage.com/cnergy-bucket/front_image/profile/profile1.svg',
+        profileImage: '/profile/profile3.svg',
       })
 
       // role에 따라 페이지 이동 차이
@@ -77,7 +75,7 @@ function LoginCheck() {
     }
   }, [code, state, scope])
 
-  return <div>로그인 정보를 확인중입니다...</div>
+  return <Loading />
 }
 
 export default function WrappedLoginCheck() {
