@@ -26,6 +26,7 @@ jobs:
         run: |
           mkdir -p .artifact
           cp -r .next/standalone .artifact/
+          mkdir -p .artifact/.next  
           cp -r .next/static .artifact/.next/static
           cp -r public .artifact/
           cp package.json .artifact/
