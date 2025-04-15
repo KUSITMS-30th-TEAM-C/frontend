@@ -24,13 +24,12 @@ jobs:
 
       - name: 아티팩트 디렉토리 구성
         run: |
-          mkdir -p .artifact
-          cp -r .next/standalone .artifact/
-          mkdir -p .artifact/.next  
+          mkdir -p .artifact/.next
+          cp -r .next/standalone .artifact/.next/standalone
           cp -r .next/static .artifact/.next/static
-          cp -r public .artifact/
-          cp package.json .artifact/
-          cp server.js .artifact/
+          cp -r public .artifact/public
+          cp package.json .artifact/package.json
+          cp server.js .artifact/server.js
 
       - name: 아티팩트 업로드
         uses: actions/upload-artifact@v4
